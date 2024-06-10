@@ -1,0 +1,21 @@
+[
+    {
+      "size_id": "1",
+      "name": "Kecil",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "size_id": "2",
+      "name": "Sedang",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "size_id": "3",
+      "name": "Besar",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+  

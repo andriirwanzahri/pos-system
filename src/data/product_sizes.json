@@ -1,0 +1,51 @@
+[
+    {
+      "product_size_id": "1",
+      "product_id": "1",
+      "size_id": "1",
+      "price": 15000.00,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "product_size_id": "2",
+      "product_id": "1",
+      "size_id": "2",
+      "price": 18000.00,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "product_size_id": "3",
+      "product_id": "1",
+      "size_id": "3",
+      "price": 21000.00,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "product_size_id": "4",
+      "product_id": "2",
+      "size_id": "1",
+      "price": 20000.00,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "product_size_id": "5",
+      "product_id": "2",
+      "size_id": "2",
+      "price": 23000.00,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "product_size_id": "6",
+      "product_id": "2",
+      "size_id": "3",
+      "price": 26000.00,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+  
