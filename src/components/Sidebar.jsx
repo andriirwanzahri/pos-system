@@ -1,10 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { GoHome } from "react-icons/go";
 import { TbTableFilled } from "react-icons/tb";
-// import { FaRegUser } from "react-icons/fa";
 import { TiClipboard } from "react-icons/ti";
-// import { FaChartSimple } from "react-icons/fa6";
-import { RiSettings3Fill } from "react-icons/ri";
+import SpeedDial from "./utils/SpeedDial";
 
 const Sidebar = () => {
   return (
@@ -19,7 +17,6 @@ const Sidebar = () => {
                 isActive ? "active-btn-sidebar" : "btn-sidebar"
               }
               to="/"
-              // className=" btn-sidebar"
             >
               {<GoHome size={35} />}
               {/* Home */}
@@ -49,15 +46,7 @@ const Sidebar = () => {
           </li>
         </ul>
         <div className="mb-0 ">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "active-btn-sidebar" : "btn-sidebar"
-            }
-            to="/shift-summary"
-          >
-            <RiSettings3Fill size={35} />
-            {/* Setting */}
-          </NavLink>
+          <SpeedDial />
         </div>
       </div>
     </aside>

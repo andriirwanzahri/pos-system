@@ -12,7 +12,7 @@ export const OrderProvider = ({ children }) => {
 
   // Discount settings
   const [minOrderAmount, setMinOrderAmount] = useState(40000);
-  const [discountRate, setDiscountRate] = useState(0.2);
+  const [discountRate, setDiscountRate] = useState(0);
   const [maxDiscount, setMaxDiscount] = useState(30000);
 
   // Order ID and Date

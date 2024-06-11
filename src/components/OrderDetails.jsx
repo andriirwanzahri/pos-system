@@ -8,13 +8,6 @@ const OrderDetails = () => {
     orderType,
     orderItems,
     subtotal,
-    discount,
-    // minOrderAmount,
-    // discountRate,
-    // maxDiscount,
-    // setMinOrderAmount,
-    // setDiscountRate,
-    // setMaxDiscount,
     orderId,
     orderDate,
     handleOrderTypeChange,
@@ -28,7 +21,7 @@ const OrderDetails = () => {
   const calculateTotal = () => {
     const taxRate = 0;
     const tax = subtotal * taxRate;
-    const total = subtotal + tax - discount;
+    const total = subtotal + tax;
     return total;
   };
 
@@ -70,6 +63,14 @@ const OrderDetails = () => {
     }
   };
 
+  const formatNumber = (number) => {
+    return number.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    });
+  };
+
   return (
     <div className="w-[300px] h-screen flex flex-col border-l justify-between pt-5">
       <div className="px-4">
@@ -101,7 +102,9 @@ const OrderDetails = () => {
       </div>
 
       {orderItems.length === 0 ? (
-        <p className="flex text-center justify-center items-center h-full mt-5 text-gray-500">Order kosong</p>
+        <p className="flex text-center justify-center items-center h-full mt-5 text-gray-500">
+          Order kosong
+        </p>
       ) : (
         <>
           <div className="mt-5 overflow-y-auto no-scrollbar h-screen px-4">
@@ -112,7 +115,7 @@ const OrderDetails = () => {
               </p>
               <hr />
               <p className="flex justify-between">
-                Order ID <span>{orderDate}</span>
+                Date <span>{orderDate}</span>
               </p>
             </div>
             <h5 className="font-semibold text-sm">
@@ -178,7 +181,7 @@ const OrderDetails = () => {
                       </button>
                     </div>
                     <p className="text-sm">
-                      Rp. {item.itemTotal}; x {item.quantity}
+                      {formatNumber(item.itemTotal)}; x {item.quantity}
                     </p>
                   </div>
                 </div>
@@ -189,12 +192,12 @@ const OrderDetails = () => {
             <div className="border rounded-lg">
               <div className="flex justify-between p-2">
                 <span>Subtotal</span>
-                <span>Rp.{subtotal}</span>
+                <span>Rp.{formatNumber(subtotal)}</span>
               </div>
               <hr />
               <div className="flex justify-between p-2">
                 <span>Total amount</span>
-                <span>Rp.{calculateTotal().toFixed(2)}</span>
+                <span>Rp.{formatNumber(calculateTotal())}</span>
               </div>
             </div>
             <button

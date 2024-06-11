@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { OrderContext } from "../context/OrderContext";
 import OrderPayment from "../components/OrderPayment";
 import { Link } from "react-router-dom";
+import DiscountModal from "../components/utils/DiscountModal"; // Adjust the import path as needed
 
 const Payment = () => {
   const {
@@ -14,6 +15,8 @@ const Payment = () => {
     setDiscountRate,
     setMaxDiscount,
   } = useContext(OrderContext);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const calculateTotal = () => {
     const taxRate = 0;
@@ -31,7 +34,7 @@ const Payment = () => {
     return number.toLocaleString("id-ID", {
       style: "currency",
       currency: "IDR",
-      minimumFractionDigits: 2,
+      minimumFractionDigits: 0,
     });
   };
 
@@ -56,44 +59,22 @@ const Payment = () => {
                   Subtotal <span>{formatNumber(subtotal)}</span>
                 </p>
                 <p className="flex justify-between my-1">
-                  Add discount <span>- {formatNumber(discount)}</span>
+                  Tambah Diskon <span>- {formatNumber(discount)}</span>
                 </p>
-                {/* Discount settings inputs */}
-                <div className="flex flex-col mt-4 space-y-2 text-xs">
-                  <label htmlFor="minOrderAmount">
-                    Minimum Order Amount (Rp)
-                  </label>
-                  <input
-                    type="number"
-                    id="minOrderAmount"
-                    value={minOrderAmount}
-                    onChange={(e) =>
-                      setMinOrderAmount(parseInt(e.target.value))
-                    }
-                    className="border p-2 rounded-lg"
-                  />
-                  <label htmlFor="discountRate">Discount Rate</label>
-                  <input
-                    type="number"
-                    id="discountRate"
-                    value={discountRate}
-                    onChange={(e) =>
-                      setDiscountRate(parseFloat(e.target.value))
-                    }
-                    className="border p-2 rounded-lg"
-                  />
-                  <label htmlFor="maxDiscount">Maximum Discount (Rp)</label>
-                  <input
-                    type="number"
-                    id="maxDiscount"
-                    value={maxDiscount}
-                    onChange={(e) => setMaxDiscount(parseInt(e.target.value))}
-                    className="border p-2 rounded-lg"
-                  />
+                {/* Discount settings button */}
+                <div className="flex justify-between items-center mt-4">
+                  <span>Discount Settings</span>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="border p-2 rounded-lg bg-blue-600 text-white"
+                  >
+                    Ubah ({discountRate * 100}%)
+                  </button>
                 </div>
                 <div className=" mt-8 border border-dashed border-opacity-50 border-gray-400 border-w-[6.5px]"></div>
                 <p className="flex justify-between mt-3 text-4xl font-bold">
-                  Total amount <span>{formatNumber(calculateTotal())}</span>
+                  Jumlah Total
+                  <span>{formatNumber(calculateTotal())}</span>
                 </p>
               </div>
             </div>
@@ -109,6 +90,16 @@ const Payment = () => {
         </div>
       </div>
       <OrderPayment />
+      <DiscountModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        minOrderAmount={minOrderAmount}
+        discountRate={discountRate}
+        maxDiscount={maxDiscount}
+        setMinOrderAmount={setMinOrderAmount}
+        setDiscountRate={setDiscountRate}
+        setMaxDiscount={setMaxDiscount}
+      />
     </>
   );
 };

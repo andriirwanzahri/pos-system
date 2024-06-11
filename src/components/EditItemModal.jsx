@@ -43,33 +43,50 @@ const EditItemModal = ({ item, onSave, onClose }) => {
     );
   };
 
+  const formatNumber = (number) => {
+    return number.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    });
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black-opacity-50 flex justify-center items-center">
       <div className="bg-white p-5 rounded-md w-[400px] max-w-[90%]">
-        <h2>Edit Item</h2>
+        <label htmlFor="Name">
+          <input
+            type="text"
+            value={item.name}
+            className="bg-white text-2xl font-bold text-center"
+            disabled
+          />
+        </label>
         <label className="block mb-3">
-          Size:
+          Ukuran:
           <select
-            className="w-[100%] p-2 mt-2 border-[#ccc] rounded-md"
+            className="w-[100%] p-2 mt-2 border rounded-md"
             value={size}
             onChange={(e) => setSize(e.target.value)}
           >
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
+            {Object.keys(item.productPrice).map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
           </select>
         </label>
         <label className="block mb-3">
           Note:
           <input
-            className="w-[100%] p-2 mt-1 border-[#ccc] rounded-md"
+            className="w-[100%] p-2 mt-1 border rounded-md"
             type="text"
             value={note}
             onChange={(e) => setNote(e.target.value)}
           />
         </label>
         <div>
-          <p>Additional Toppings:</p>
+          <p>Tambahkan Topping:</p>
           {Object.keys(item.toppingPrice).map((topping) => (
             <label key={topping}>
               <ul>
@@ -79,26 +96,26 @@ const EditItemModal = ({ item, onSave, onClose }) => {
                     checked={additionalToppings.includes(topping)}
                     onChange={() => handleToppingChange(topping)}
                   />
-                  {topping} (+${item.toppingPrice[topping]})
+                  {topping} (+{formatNumber(item.toppingPrice[topping])})
                 </li>
               </ul>
               {/* Display topping price */}
             </label>
           ))}
         </div>
-        <p>Total Price: ${calculateTotalPrice()}</p>
+        <p>Total Harga: {formatNumber(calculateTotalPrice())}</p>
         {/* Display the calculated total price */}
         <button
           className="w-full p-2 mt-2 bg-[#28a745] rounded-md"
           onClick={handleSave}
         >
-          Save
+          Simpan
         </button>
         <button
           className="w-full p-2 mt-2 bg-[#dc3545] rounded-md"
           onClick={onClose}
         >
-          Cancel
+          Batal
         </button>
       </div>
     </div>
@@ -108,6 +125,7 @@ const EditItemModal = ({ item, onSave, onClose }) => {
 EditItemModal.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    name: PropTypes.string,
     customDetails: PropTypes.shape({
       size: PropTypes.string.isRequired,
       note: PropTypes.string,

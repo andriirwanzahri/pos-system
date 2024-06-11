@@ -1,20 +1,23 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom"; // Change this line
+import { useNavigate } from "react-router-dom";
 import { OrderContext } from "../context/OrderContext";
+
+const tables = ["1", "2", "3", "4", "5"];
 
 const Tables = () => {
   const { setTableNumber } = useContext(OrderContext);
   const [selectedTable, setSelectedTable] = useState(null);
-  const navigate = useNavigate(); // Change this line
+  const navigate = useNavigate();
 
-  const handleTableSelection = (e) => {
-    setSelectedTable(e.target.value);
+  const handleTableSelection = (tableNumber) => {
+    setSelectedTable(tableNumber);
   };
 
   const handleContinue = () => {
     setTableNumber(selectedTable);
-    navigate("/payment"); // Change this line
+    navigate("/payment");
   };
+
   return (
     <>
       <div className="flex flex-1 flex-col">
@@ -31,22 +34,32 @@ const Tables = () => {
             </div>
           </div>
         </nav>
-        {/* flex   */}
+        {/* flex */}
         <div className="flex-1 flex overflow-hidden">
           <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Tables Management</h1>
             <div className="select-table-container">
               <h2>Select Table</h2>
-              <select value={selectedTable} onChange={handleTableSelection}>
-                <option value="" disabled>
-                  Select a table
-                </option>
-                <option value="1">Table 1</option>
-                <option value="2">Table 2</option>
-                <option value="3">Table 3</option>
-                <option value="4">Table 4</option>
-              </select>
-              <button onClick={handleContinue} disabled={!selectedTable}>
+              <ul className="gap-4 flex">
+                {tables.map((table) => (
+                  <li
+                    key={table}
+                    className={`cursor-pointer rounded-lg p-2 border w-56 h-56 flex justify-center items-center text-white ${
+                      selectedTable === table
+                        ? "bg-blue-500"
+                        : "bg-gray-300 text-black"
+                    }`}
+                    onClick={() => handleTableSelection(table)}
+                  >
+                    Meja {table}
+                  </li>
+                ))}
+              </ul>
+              <button
+                className="bg-green-700 text-white w-full mt-10 rounded-xl p-5"
+                onClick={handleContinue}
+                disabled={!selectedTable}
+              >
                 Continue to Payment
               </button>
             </div>

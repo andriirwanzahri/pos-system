@@ -16,12 +16,19 @@ const products = [
     name: "Manggo Keju",
     productPrice: { Medium: 17000, Large: 22000 },
     toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
-    image: "/images/MANGGA-THAI.png",
+    image: "/images/mangga-keju.png",
   },
   {
     id: 3,
     name: "Alpukat Thai",
     productPrice: { Medium: 13000, Large: 18000 },
+    toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
+    image: "/images/alpukat-thai.png",
+  },
+  {
+    id: 4,
+    name: "Alpukat Kocok",
+    productPrice: { Medium: 12000, Large: 17000 },
     toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/POKAT-KOCOK.png",
   },
@@ -33,6 +40,14 @@ const Home = () => {
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
+  };
+
+  const formatNumber = (number) => {
+    return number.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    });
   };
   return (
     <>
@@ -102,7 +117,7 @@ const Home = () => {
 
                     <div className="flex items-center justify-between">
                       <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                        Rp.{product.productPrice[selectedSize]}
+                        {formatNumber(product.productPrice[selectedSize])}
                       </span>
                     </div>
                     <label className="block mb-2">Select Size:</label>

@@ -1,13 +1,7 @@
 import { useContext, useState } from "react";
 import { OrderContext } from "../context/OrderContext";
 import EditItemModal from "./EditItemModal";
-
-function formatNumber(number, locale = "id-ID", currency = "IDR") {
-  return number.toLocaleString(locale, {
-    style: "currency",
-    currency: currency,
-  });
-}
+import Dropdown from "./utils/Dropdown";
 
 const OrderDetails = () => {
   const {
@@ -49,12 +43,27 @@ const OrderDetails = () => {
       });
     }
   };
+  const formatNumber = (number) => {
+    return number.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    });
+  };
+
+  const dropdownMenuItems = [
+    { href: "#", label: "Print Order Check" },
+    { href: "#", label: "Hold Order" },
+    { href: "#", label: "Split Order" },
+    { href: "/", label: "Cancel Order" },
+  ];
 
   return (
     <div className="w-[500px] h-screen flex flex-col border-l justify-between pt-5">
       <div className="px-4">
-        <div className="h-14 border-b">
+        <div className="h-14 border-b flex justify-between">
           <h2 className="text-3xl font-bold mb-4">Order Details</h2>
+          <Dropdown menuItems={dropdownMenuItems} />
         </div>
       </div>
 
