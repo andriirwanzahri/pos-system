@@ -4,6 +4,7 @@ import { TbTableFilled } from "react-icons/tb";
 // import { FaRegUser } from "react-icons/fa";
 import { TiClipboard } from "react-icons/ti";
 // import { FaChartSimple } from "react-icons/fa6";
+import { RiSettings3Fill } from "react-icons/ri";
 
 const Sidebar = () => {
   return (
@@ -54,6 +55,7 @@ const Sidebar = () => {
             }
             to="/shift-summary"
           >
+            <RiSettings3Fill size={35} />
             {/* Setting */}
           </NavLink>
         </div>

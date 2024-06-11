@@ -1,14 +1,25 @@
 import { useContext } from "react";
 import { OrderContext } from "../context/OrderContext";
+import OrderPayment from "../components/OrderPayment";
+import { Link } from "react-router-dom";
 
 const Payment = () => {
-  const { orderType, orderItems, subtotal, tableNumber } =
-    useContext(OrderContext);
+  const {
+    subtotal,
+    discount,
+    minOrderAmount,
+    discountRate,
+    maxDiscount,
+    setMinOrderAmount,
+    setDiscountRate,
+    setMaxDiscount,
+  } = useContext(OrderContext);
 
   const calculateTotal = () => {
-    const taxRate = 0.05;
+    const taxRate = 0;
     const tax = subtotal * taxRate;
-    return subtotal + tax;
+    const total = subtotal + tax - discount;
+    return total;
   };
 
   const handlePayment = () => {
@@ -16,71 +27,89 @@ const Payment = () => {
     alert("Payment successful!");
   };
 
+  const formatNumber = (number) => {
+    return number.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 2,
+    });
+  };
+
   return (
-    <div className="flex flex-1 flex-col">
-      {/* Navbar Home */}
-      <nav className="border-b mx-4 py-4">
-        <div className="container flex justify-between items-center ">
-          <h1 className="text-4xl font-bold">Payment</h1>
-          <div className="space-x-4 ">
-            <input
-              className="w-96 h-10 rounded-full border p-5"
-              type="text"
-              placeholder="Search product"
-            />
-          </div>
-        </div>
-      </nav>
-      {/* flex   */}
-      <div className="flex-1 flex overflow-hidden">
-        <div className="m-auto max-w-2xl p-4">
-          <h1 className="text-3xl font-bold mb-4">Payment</h1>
-          {orderType === "Dine in" && (
-            <div className="border rounded-xl p-3 mb-4">
-              <h2 className="text-2xl font-semibold">Table Number</h2>
-              <p>Table {tableNumber}</p>
-            </div>
-          )}
-          <div className="border rounded-lg p-5 mb-4">
-            <h2 className="text-2xl mb-3 font-semibold">Order Summary</h2>
-            <ul className="p-0 ">
-              {orderItems.map((item) => (
-                <li key={item.id} className="mb-2 border-b pb-2">
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="font-semibold">{item.name}</p>
-                      <p>Size: {item.customDetails.size}</p>
-                      <p>Quantity: {item.quantity}</p>
-                    </div>
-                    <div>
-                      <p>Rp. {item.itemTotal}</p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="subtotal flex justify-between mt-4">
-              <span>Subtotal</span>
-              <span>Rp. {subtotal.toFixed(2)}</span>
-            </div>
-            <div className="tax flex justify-between mt-2">
-              <span>Tax 5%</span>
-              <span>Rp. {(subtotal * 0.05).toFixed(2)}</span>
-            </div>
-            <div className="total flex justify-between mt-4 font-bold text-lg">
-              <span>Total</span>
-              <span>Rp. {calculateTotal().toFixed(2)}</span>
+    <>
+      <div className="flex flex-1 flex-col">
+        {/* Navbar Home */}
+        <nav className="border-b mx-4 py-4">
+          <div className="container flex justify-between items-center ">
+            <h1 className="text-4xl font-bold">Payment</h1>
+            <div className="space-x-4 ">
+              <Link to={"/"}>Choose Customer</Link>
             </div>
           </div>
-          <button
-            className="bg-green-700 w-full h-10 rounded-lg text-white font-semibold"
-            onClick={handlePayment}
-          >
-            Complete Payment
-          </button>
+        </nav>
+        {/* flex   */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="p-5 w-full">
+            <div className="border rounded-lg mt-5">
+              <div className="p-5 px-10">
+                <p className="flex justify-between my-1">
+                  Subtotal <span>{formatNumber(subtotal)}</span>
+                </p>
+                <p className="flex justify-between my-1">
+                  Add discount <span>- {formatNumber(discount)}</span>
+                </p>
+                {/* Discount settings inputs */}
+                <div className="flex flex-col mt-4 space-y-2 text-xs">
+                  <label htmlFor="minOrderAmount">
+                    Minimum Order Amount (Rp)
+                  </label>
+                  <input
+                    type="number"
+                    id="minOrderAmount"
+                    value={minOrderAmount}
+                    onChange={(e) =>
+                      setMinOrderAmount(parseInt(e.target.value))
+                    }
+                    className="border p-2 rounded-lg"
+                  />
+                  <label htmlFor="discountRate">Discount Rate</label>
+                  <input
+                    type="number"
+                    id="discountRate"
+                    value={discountRate}
+                    onChange={(e) =>
+                      setDiscountRate(parseFloat(e.target.value))
+                    }
+                    className="border p-2 rounded-lg"
+                  />
+                  <label htmlFor="maxDiscount">Maximum Discount (Rp)</label>
+                  <input
+                    type="number"
+                    id="maxDiscount"
+                    value={maxDiscount}
+                    onChange={(e) => setMaxDiscount(parseInt(e.target.value))}
+                    className="border p-2 rounded-lg"
+                  />
+                </div>
+                <div className=" mt-8 border border-dashed border-opacity-50 border-gray-400 border-w-[6.5px]"></div>
+                <p className="flex justify-between mt-3 text-4xl font-bold">
+                  Total amount <span>{formatNumber(calculateTotal())}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="p-5 ">
+            <button
+              onClick={handlePayment}
+              className="border rounded-lg mt-5 w-full p-5 bg-green-700 text-white"
+            >
+              Confirm Payment
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      <OrderPayment />
+    </>
   );
 };
 

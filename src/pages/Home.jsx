@@ -7,30 +7,29 @@ const products = [
   {
     id: 1,
     name: "Manggo Thai",
-    productPrice: { Small: 10000, Medium: 15000, Large: 20000 },
-    toppingPrice: { Cheese: 2000, Lettuce: 1500, Tomato: 1000, Onion: 1200 },
+    productPrice: { Medium: 15000, Large: 20000 },
+    toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/MANGGA-THAI.png",
   },
   {
     id: 2,
     name: "Manggo Keju",
-    productPrice: { Small: 80, Medium: 120, Large: 160 },
-    toppingPrice: { Cheese: 2000, Lettuce: 1500, Tomato: 1000, Onion: 1200 },
+    productPrice: { Medium: 17000, Large: 22000 },
+    toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/MANGGA-THAI.png",
   },
   {
     id: 3,
     name: "Alpukat Thai",
-    productPrice: { Small: 90, Medium: 130, Large: 180 },
-    toppingPrice: { Cheese: 2000, Lettuce: 1500, Tomato: 1000, Onion: 1200 },
+    productPrice: { Medium: 13000, Large: 18000 },
+    toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/POKAT-KOCOK.png",
   },
-
 ];
 
 const Home = () => {
   const { handleAddItemToOrder } = useContext(OrderContext);
-  const [selectedSize, setSelectedSize] = useState("Small");
+  const [selectedSize, setSelectedSize] = useState("Medium");
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
@@ -77,33 +76,53 @@ const Home = () => {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="border p-4 rounded-lg hover:bg-blue-600 "
+                  className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <img
+                  <a
+                    href="#"
                     onClick={() => handleAddItemToOrder(product, selectedSize)}
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-40 cursor-pointer object-cover rounded-md"
-                  />
-                  <h2 className="mt-2 text-lg font-semibold">{product.name}</h2>
-                  <p className="mt-1 text-gray-600">
-                    Rp.{product.productPrice[selectedSize]}
-                  </p>
-                  <div className="mt-4">
+                  >
+                    <img
+                      className="p-2 rounded-t-lg"
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </a>
+                  <div className="px-5 pb-5">
+                    <a
+                      href="#"
+                      onClick={() =>
+                        handleAddItemToOrder(product, selectedSize)
+                      }
+                    >
+                      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        {product.name}
+                      </h5>
+                    </a>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-3xl font-bold text-gray-900 dark:text-white">
+                        Rp.{product.productPrice[selectedSize]}
+                      </span>
+                    </div>
                     <label className="block mb-2">Select Size:</label>
                     <select
                       value={selectedSize}
                       onChange={(e) => handleSizeChange(e.target.value)}
                       className="w-full p-2 border rounded-md"
                     >
-                      <option value="Small">Small</option>
-                      <option value="Medium">Medium</option>
-                      <option value="Large">Large</option>
+                      {Object.keys(product.productPrice).map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                      {/* <option value="Large">Large</option> */}
                     </select>
                   </div>
                 </div>
               ))}
             </div>
+            {/* Table biasa untuk test */}
           </div>
         </div>
       </div>

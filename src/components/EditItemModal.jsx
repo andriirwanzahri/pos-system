@@ -72,17 +72,21 @@ const EditItemModal = ({ item, onSave, onClose }) => {
           <p>Additional Toppings:</p>
           {Object.keys(item.toppingPrice).map((topping) => (
             <label key={topping}>
-              <input
-                type="checkbox"
-                checked={additionalToppings.includes(topping)}
-                onChange={() => handleToppingChange(topping)}
-              />
-              {topping} (+${item.toppingPrice[topping]}){" "}
+              <ul>
+                <li>
+                  <input
+                    type="checkbox"
+                    checked={additionalToppings.includes(topping)}
+                    onChange={() => handleToppingChange(topping)}
+                  />
+                  {topping} (+${item.toppingPrice[topping]})
+                </li>
+              </ul>
               {/* Display topping price */}
             </label>
           ))}
         </div>
-        <p>Total Price: ${calculateTotalPrice()}</p>{" "}
+        <p>Total Price: ${calculateTotalPrice()}</p>
         {/* Display the calculated total price */}
         <button
           className="w-full p-2 mt-2 bg-[#28a745] rounded-md"

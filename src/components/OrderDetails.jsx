@@ -8,6 +8,15 @@ const OrderDetails = () => {
     orderType,
     orderItems,
     subtotal,
+    discount,
+    // minOrderAmount,
+    // discountRate,
+    // maxDiscount,
+    // setMinOrderAmount,
+    // setDiscountRate,
+    // setMaxDiscount,
+    orderId,
+    orderDate,
     handleOrderTypeChange,
     handleUpdateItem,
     handleRemoveItem,
@@ -17,9 +26,10 @@ const OrderDetails = () => {
   const navigate = useNavigate();
 
   const calculateTotal = () => {
-    const taxRate = 0.05;
+    const taxRate = 0;
     const tax = subtotal * taxRate;
-    return subtotal + tax;
+    const total = subtotal + tax - discount;
+    return total;
   };
 
   const handleEditClick = (item) => {
@@ -38,7 +48,6 @@ const OrderDetails = () => {
   const handleQuantityChange = (id, quantity) => {
     const updatedItem = orderItems.find((item) => item.id === id);
     if (updatedItem) {
-      // Calculate the new item total with the quantity change and topping prices
       const newItemTotal =
         quantity *
         (updatedItem.productPrice[updatedItem.customDetails.size] +
@@ -55,20 +64,18 @@ const OrderDetails = () => {
 
   const handleContinue = () => {
     if (orderType === "Dine in") {
-      navigate("/Tables"); // Change this line
+      navigate("/Tables");
     } else {
-      navigate("/payment"); // Change this line
+      navigate("/payment");
     }
   };
 
   return (
     <div className="w-[300px] h-screen flex flex-col border-l justify-between pt-5">
       <div className="px-4">
-        {/* Header Order */}
         <div className="h-14 border-b">
           <h2 className="text-3xl font-bold mb-4">Order Details</h2>
         </div>
-        {/* Tombol Deliver */}
         <div className="flex justify-center rounded-full border mt-5">
           <button
             onClick={() => handleOrderTypeChange("Dine in")}
@@ -93,90 +100,113 @@ const OrderDetails = () => {
         </div>
       </div>
 
-      {/* Scroll Item */}
-      <div className="mt-5 overflow-y-auto no-scrollbar h-screen px-4">
-        <h5 className="font-semibold mt-2">Order details</h5>
-        <div className="border p-2 my-2 rounded-lg text-xs">
-          <p>
-            Order ID <span>#1231231</span>
-          </p>
-          <hr />
-          <p>
-            Order ID <span>#1231231</span>
-          </p>
-        </div>
-        <h5 className="font-semibold text-sm">
-          Items
-          <span className="bg-gray-400 rounded-full p-1">
-            ({orderItems.length})
-          </span>
-        </h5>
-        {orderItems.map((item) => (
-          <div key={item.id} className="border rounded-lg mb-4">
-            <div className="p-2">
-              <div className="flex justify-between">
-                <img src={`${item.image}`} className="w-20" alt="" />
-                <div className="flex flex-col w-full h-full text-sm">
-                  <h3 className="font-semibold">{item.name}</h3>
-                  <p>Size: {item.customDetails.size}</p>
-                  <p>
-                    Extra: {item.customDetails.additionalToppings.join(", ")}
-                  </p>
-                  <p>Note:{item.customDetails.note || "No note"}</p>
-                </div>
-                <div className="flex flex-col">
-                  <button onClick={() => handleEditClick(item)}>✏️</button>
-                  <button onClick={() => handleRemoveItem(item.id)}>🗑️</button>
+      {orderItems.length === 0 ? (
+        <p className="flex text-center justify-center items-center h-full mt-5 text-gray-500">Order kosong</p>
+      ) : (
+        <>
+          <div className="mt-5 overflow-y-auto no-scrollbar h-screen px-4">
+            <h5 className="font-semibold mt-2">Order details</h5>
+            <div className="border p-2 my-2 rounded-lg text-xs">
+              <p className="flex justify-between">
+                Order ID <span>{orderId}</span>
+              </p>
+              <hr />
+              <p className="flex justify-between">
+                Order ID <span>{orderDate}</span>
+              </p>
+            </div>
+            <h5 className="font-semibold text-sm">
+              Items
+              <span className="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
+                {orderItems.length}
+              </span>
+            </h5>
+            {orderItems.map((item) => (
+              <div key={item.id} className="border rounded-lg mb-4">
+                <div className="p-2">
+                  <div className="flex justify-between">
+                    <img src={`${item.image}`} className="w-20" alt="" />
+                    <div className="flex flex-col w-full h-full text-sm">
+                      <h3 className="font-semibold">{item.name}</h3>
+                      <p>Size: {item.customDetails.size}</p>
+                      <p>
+                        Extra:{" "}
+                        {item.customDetails.additionalToppings.join(", ")}
+                      </p>
+                      <p>Note:{item.customDetails.note || "No note"}</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <button onClick={() => handleEditClick(item)}>✏️</button>
+                      <button onClick={() => handleRemoveItem(item.id)}>
+                        🗑️
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="flex items-center">
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity - 1)
+                        }
+                        className="inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                        type="button"
+                      >
+                        <span className="sr-only">Quantity button</span>-
+                      </button>
+                      <div className="ms-3">
+                        <input
+                          type="text"
+                          className="bg-gray-50 text-center w-10 border border-gray-300 text-gray-900 text-sm rounded-lg"
+                          value={item.quantity || ""}
+                          onChange={(e) => {
+                            const newValue = parseInt(e.target.value);
+                            handleQuantityChange(
+                              item.id,
+                              isNaN(newValue) ? 0 : newValue
+                            );
+                          }}
+                        />
+                      </div>
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity + 1)
+                        }
+                        className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                        type="button"
+                      >
+                        <span className="sr-only">Quantity button</span>+
+                      </button>
+                    </div>
+                    <p className="text-sm">
+                      Rp. {item.itemTotal}; x {item.quantity}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="flex justify-between px-2">
-                <button
-                  onClick={() =>
-                    handleQuantityChange(item.id, item.quantity - 1)
-                  }
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  onClick={() =>
-                    handleQuantityChange(item.id, item.quantity + 1)
-                  }
-                >
-                  +
-                </button>
-                Rp. {item.itemTotal}; x {item.quantity}
+            ))}
+          </div>
+          <div className="shadow-[0_-20px_50px_-1px_rgba(0,0,0,0.07)] text-sm p-4 rounded-t-xl">
+            <div className="border rounded-lg">
+              <div className="flex justify-between p-2">
+                <span>Subtotal</span>
+                <span>Rp.{subtotal}</span>
+              </div>
+              <hr />
+              <div className="flex justify-between p-2">
+                <span>Total amount</span>
+                <span>Rp.{calculateTotal().toFixed(2)}</span>
               </div>
             </div>
+            <button
+              className="my-2 bg-green-700 w-full h-10 rounded-lg"
+              onClick={handleContinue}
+            >
+              {orderType === "Dine in" ? "Continue" : "Payment"}
+            </button>
           </div>
-        ))}
-      </div>
+        </>
+      )}
 
-      {/* Footer detail */}
-      <div className="shadow-[0_-20px_50px_-1px_rgba(0,0,0,0.07)] text-sm p-4 rounded-t-xl">
-        <div className="border rounded-lg">
-          <div className="flex justify-between p-2">
-            <span>Subtotal</span>
-            <span>Rp.{subtotal}</span>
-          </div>
-          <div className="flex justify-between p-2">
-            <span>Tax 5%</span>
-            <span>Rp.{(subtotal * 0.05).toFixed(2)}</span>
-          </div>
-          <hr />
-          <div className="flex justify-between p-2">
-            <span>Total amount</span>
-            <span>Rp.{calculateTotal().toFixed(2)}</span>
-          </div>
-        </div>
-
-        <button
-          className="my-2 bg-green-700 w-full h-10 rounded-lg"
-          onClick={handleContinue}
-        >
-          {orderType === "Dine in" ? "Continue" : "Payment"}
-        </button>
-      </div>
       {editingItem && (
         <EditItemModal
           item={editingItem}
