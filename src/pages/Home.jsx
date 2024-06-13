@@ -1,12 +1,18 @@
-import OrderDetails from "../components/OrderDetails";
-import { OrderContext } from "../context/OrderContext";
+// Home.js
+
 import { useState, useContext } from "react";
+import OrderDetails from "../components/OrderDetails";
+import Categories from "../components/utils/Categories";
+import { OrderContext } from "../context/OrderContext";
+// import PropTypes from "prop-types";
+
 const categories = ["Smoothies", "Alpukat Kocok", "Makanan"];
 
 const products = [
   {
     id: 1,
     name: "Manggo Thai",
+    category: categories[0],
     productPrice: { Medium: 15000, Large: 20000 },
     toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/MANGGA-THAI.png",
@@ -14,6 +20,7 @@ const products = [
   {
     id: 2,
     name: "Manggo Keju",
+    category: categories[0],
     productPrice: { Medium: 17000, Large: 22000 },
     toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/mangga-keju.png",
@@ -21,6 +28,7 @@ const products = [
   {
     id: 3,
     name: "Alpukat Thai",
+    category: categories[1],
     productPrice: { Medium: 13000, Large: 18000 },
     toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/alpukat-thai.png",
@@ -28,6 +36,7 @@ const products = [
   {
     id: 4,
     name: "Alpukat Kocok",
+    category: categories[1],
     productPrice: { Medium: 12000, Large: 17000 },
     toppingPrice: { Cheese: 3000, Milo: 3000, ChocoCrunts: 2000, Oreo: 2000 },
     image: "/images/POKAT-KOCOK.png",
@@ -37,6 +46,7 @@ const products = [
 const Home = () => {
   const { handleAddItemToOrder } = useContext(OrderContext);
   const [selectedSize, setSelectedSize] = useState("Medium");
+  const [filteredProducts, setFilteredProducts] = useState(products);
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
@@ -49,6 +59,18 @@ const Home = () => {
       minimumFractionDigits: 0,
     });
   };
+
+  const handleCategoryClick = (category) => {
+    if (category === "All") {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter(
+        (product) => product.category === category
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-1 flex-col">
@@ -68,27 +90,16 @@ const Home = () => {
         {/* flex   */}
         <div className="flex-1 flex overflow-hidden">
           <div className="flex-1 overflow-auto p-4 no-scrollbar">
-            {/* Category */}
-            <div className="w-full  mb-5 rounded-lg">
-              <h1 className="font-bold ">Category</h1>
-              <ul className="flex gap-4 mt-2">
-                <li className="bg-green-600 text-sm py-3 px-6 rounded-full">
-                  All
-                </li>
-                {categories.map((category, index) => (
-                  <li
-                    key={index}
-                    className="bg-gray-200 text-sm py-3 px-6 rounded-full hover:bg-green-300 cursor-pointer"
-                  >
-                    {category}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Render Categories component */}
+            <Categories
+              categories={categories}
+              handleCategoryClick={handleCategoryClick}
+            />
+
             <div className="border-b mb-5"></div>
             {/* Produk */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <div
                   key={product.id}
                   className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -131,7 +142,6 @@ const Home = () => {
                           {size}
                         </option>
                       ))}
-                      {/* <option value="Large">Large</option> */}
                     </select>
                   </div>
                 </div>
