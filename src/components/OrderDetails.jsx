@@ -39,6 +39,7 @@ const OrderDetails = () => {
   };
 
   const handleQuantityChange = (id, quantity) => {
+    if (quantity < 0) return;
     const updatedItem = orderItems.find((item) => item.id === id);
     if (updatedItem) {
       const newItemTotal =
@@ -72,7 +73,7 @@ const OrderDetails = () => {
   };
 
   return (
-    <div className="w-[300px] h-screen flex flex-col border-l justify-between pt-5">
+    <div className="w-[400px] h-screen flex flex-col border-l justify-between pt-5">
       <div className="px-4">
         <div className="h-14 border-b">
           <h2 className="text-3xl font-bold mb-4">Order Details</h2>
@@ -109,11 +110,11 @@ const OrderDetails = () => {
         <>
           <div className="mt-5 overflow-y-auto no-scrollbar h-screen px-4">
             <h5 className="font-semibold mt-2">Order details</h5>
-            <div className="border p-2 my-2 rounded-lg text-xs">
+            <div className="border p-2 my-2 rounded-lg ">
               <p className="flex justify-between">
                 Order ID <span>{orderId}</span>
               </p>
-              <hr />
+              <div className="my-2 border border-dashed" />
               <p className="flex justify-between">
                 Date <span>{orderDate}</span>
               </p>
@@ -131,9 +132,15 @@ const OrderDetails = () => {
                     <img src={`${item.image}`} className="w-20" alt="" />
                     <div className="flex flex-col w-full h-full text-sm">
                       <h3 className="font-semibold">{item.name}</h3>
+                      <p>
+                        Harga :
+                        {formatNumber(
+                          item.productPrice[item.customDetails.size]
+                        )}
+                      </p>
                       <p>Size: {item.customDetails.size}</p>
                       <p>
-                        Extra:{" "}
+                        Extra:
                         {item.customDetails.additionalToppings.join(", ")}
                       </p>
                       <p>Note:{item.customDetails.note || "No note"}</p>
@@ -160,7 +167,7 @@ const OrderDetails = () => {
                         <input
                           type="text"
                           className="bg-gray-50 text-center w-10 border border-gray-300 text-gray-900 text-sm rounded-lg"
-                          value={item.quantity || ""}
+                          value={item.quantity || 0}
                           onChange={(e) => {
                             const newValue = parseInt(e.target.value);
                             handleQuantityChange(
@@ -180,7 +187,7 @@ const OrderDetails = () => {
                         <span className="sr-only">Quantity button</span>+
                       </button>
                     </div>
-                    <p className="text-sm">
+                    <p className="text-sm flex flex-col">
                       {formatNumber(item.itemTotal)}; x {item.quantity}
                     </p>
                   </div>

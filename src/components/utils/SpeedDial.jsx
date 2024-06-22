@@ -49,6 +49,7 @@ function SpeedDial() {
         aria-expanded={isMenuOpen}
         className="btn-sidebar"
       >
+        
         <RiSettings3Fill size={35} />
         <span className="sr-only">Open actions menu</span>
       </button>

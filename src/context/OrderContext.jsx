@@ -19,6 +19,9 @@ export const OrderProvider = ({ children }) => {
   const [orderId, setOrderId] = useState("");
   const [orderDate, setOrderDate] = useState("");
 
+  // Paid Orders
+  const [paidOrders, setPaidOrders] = useState([]);
+
   useEffect(() => {
     calculateDiscount();
     if (!orderId) {
@@ -89,6 +92,28 @@ export const OrderProvider = ({ children }) => {
     setOrderDate(date);
   };
 
+  const handlePaidOrder = () => {
+    const newOrder = {
+      orderId,
+      orderDate,
+      tableNumber,
+      orderItems,
+      subtotal,
+      discount,
+      total: subtotal - discount,
+    };
+    setPaidOrders([...paidOrders, newOrder]);
+    clearOrder();
+  };
+
+  const clearOrder = () => {
+    setOrderItems([]);
+    setSubtotal(0);
+    setDiscount(0);
+    setTableNumber(null);
+    generateOrderId();
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -102,6 +127,7 @@ export const OrderProvider = ({ children }) => {
         maxDiscount,
         orderId,
         orderDate,
+        paidOrders,
         handleOrderTypeChange,
         handleAddItemToOrder,
         handleUpdateItem,
@@ -110,6 +136,8 @@ export const OrderProvider = ({ children }) => {
         setMinOrderAmount,
         setDiscountRate,
         setMaxDiscount,
+        handlePaidOrder,
+        clearOrder,
       }}
     >
       {children}

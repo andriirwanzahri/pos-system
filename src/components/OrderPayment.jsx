@@ -63,22 +63,22 @@ const OrderDetails = () => {
       <div className="px-4">
         <div className="h-14 border-b flex justify-between">
           <h2 className="text-3xl font-bold mb-4">Order Details</h2>
-          <Dropdown menuItems={dropdownMenuItems} />
+          <Dropdown menuItems={dropdownMenuItems}  />
         </div>
       </div>
 
       <div className="mt-5 overflow-y-auto no-scrollbar h-screen px-4">
-        <div className="border p-2 my-2 rounded-lg text-xs">
+        <div className="border p-4 my-2 rounded-lg ">
           <p className="flex justify-between">
             Order ID <span>{orderId}</span>
           </p>
-          <hr />
+          <hr className="border border-dashed my-2" />
           <p className="flex justify-between">
             Date <span>{orderDate}</span>
           </p>
-          <hr />
+          <hr className="border border-dashed my-2" />
           <p className="flex justify-between">
-            Table <span> {tableNumber}</span>
+            Table <span> {tableNumber == null ? 0 : tableNumber}</span>
           </p>
         </div>
         <h5 className="font-semibold text-sm">

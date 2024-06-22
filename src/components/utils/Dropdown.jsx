@@ -1,19 +1,30 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { OrderContext } from "../../context/OrderContext";
 
 const Dropdown = ({ menuItems }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { clearOrder } = useContext(OrderContext);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
+  const handleCancel = (items) => {
+    if (items == "/") {
+      clearOrder();
+      alert("apakah anda ingin membatalkan order ..?");
+      navigate("/");
+    }
+  };
   return (
     <div className="relative">
       <button
         id="dropdownMenuButton"
         onClick={toggleDropdown}
-        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900"
         type="button"
       >
         <svg
@@ -41,8 +52,8 @@ const Dropdown = ({ menuItems }) => {
           {menuItems.map((item, index) => (
             <li key={index}>
               <a
-                href={item.href}
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={() => handleCancel(item.href)}
+                className="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 {item.label}
               </a>

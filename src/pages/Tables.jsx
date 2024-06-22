@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { OrderContext } from "../context/OrderContext";
+import Search from "../components/utils/Search";
 
 const tables = ["1", "2", "3", "4", "5"];
 
@@ -26,11 +27,8 @@ const Tables = () => {
           <div className="container flex justify-between items-center ">
             <h1 className="text-4xl font-bold">Tables</h1>
             <div className="space-x-4 ">
-              <input
-                className="w-96 h-10 rounded-full border p-5"
-                type="text"
-                placeholder="Search product"
-              />
+              {/* Bagian Search */}
+              <Search placeholder="Cari Table" />
             </div>
           </div>
         </nav>

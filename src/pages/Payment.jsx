@@ -14,6 +14,7 @@ const Payment = () => {
     setMinOrderAmount,
     setDiscountRate,
     setMaxDiscount,
+    handlePaidOrder
   } = useContext(OrderContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,10 +26,22 @@ const Payment = () => {
     return total;
   };
 
+
   const handlePayment = () => {
-    // Handle payment logic here
+    // Logika pembayaran Anda di sini
+    // Misalnya, melakukan panggilan API untuk memproses pembayaran
+    // ...
+
+    // Setelah pembayaran berhasil
+    handlePaidOrder();
+    // Navigasi ke halaman konfirmasi atau beranda
+    // navigate("/confirmation");
     alert("Payment successful!");
   };
+  // const handlePayment = () => {
+  //   // Handle payment logic here
+  //   alert("Payment successful!");
+  // };
 
   const formatNumber = (number) => {
     return number.toLocaleString("id-ID", {
