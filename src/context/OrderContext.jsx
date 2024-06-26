@@ -46,6 +46,7 @@ export const OrderProvider = ({ children }) => {
       customDetails,
       additionalCost,
       itemTotal,
+      
     };
     setOrderItems([...orderItems, newItem]);
     setSubtotal(subtotal + itemTotal);

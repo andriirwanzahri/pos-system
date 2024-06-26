@@ -28,6 +28,7 @@ const OrderDetails = () => {
   };
 
   const handleQuantityChange = (id, quantity) => {
+    if (quantity < 0) return;
     const updatedItem = orderItems.find((item) => item.id === id);
     if (updatedItem) {
       const newItemTotal =
@@ -63,7 +64,7 @@ const OrderDetails = () => {
       <div className="px-4">
         <div className="h-14 border-b flex justify-between">
           <h2 className="text-3xl font-bold mb-4">Order Details</h2>
-          <Dropdown menuItems={dropdownMenuItems}  />
+          <Dropdown menuItems={dropdownMenuItems} />
         </div>
       </div>
 
@@ -120,7 +121,7 @@ const OrderDetails = () => {
                     <input
                       type="text"
                       className="bg-gray-50 text-center w-10 border border-gray-300 text-gray-900 text-sm rounded-lg"
-                      value={item.quantity || ""}
+                      value={item.quantity || 0}
                       onChange={(e) => {
                         const newValue = parseInt(e.target.value);
                         handleQuantityChange(

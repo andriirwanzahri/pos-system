@@ -51,6 +51,11 @@ const EditItemModal = ({ item, onSave, onClose }) => {
     });
   };
 
+  const displayToppingPrice = (topping) => {
+    const price = item.toppingPrice[topping];
+    return price ? ` (+${formatNumber(price)})` : "";
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black-opacity-50 flex justify-center items-center">
       <div className="bg-white p-5 rounded-md w-[400px] max-w-[90%]">
@@ -96,7 +101,8 @@ const EditItemModal = ({ item, onSave, onClose }) => {
                     checked={additionalToppings.includes(topping)}
                     onChange={() => handleToppingChange(topping)}
                   />
-                  {topping} (+{formatNumber(item.toppingPrice[topping])})
+                  {topping}
+                  {displayToppingPrice(topping)}
                 </li>
               </ul>
               {/* Display topping price */}
