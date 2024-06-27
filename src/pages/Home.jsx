@@ -1,11 +1,9 @@
-// Home.js
-
 import { useState, useContext } from "react";
 import OrderDetails from "../components/OrderDetails";
 import Categories from "../components/utils/Categories";
 import { OrderContext } from "../context/OrderContext";
-import Search from "../components/utils/Search";
-// import PropTypes from "prop-types";
+import Navbar from "../components/Navbar";
+import useFormat from "../hooks/useFormat";
 
 const categories = ["Smoothies", "Alpukat Kocok", "Makanan"];
 
@@ -113,17 +111,9 @@ const Home = () => {
   const { handleAddItemToOrder } = useContext(OrderContext);
   const [selectedSize, setSelectedSize] = useState("Medium");
   const [filteredProducts, setFilteredProducts] = useState(products);
-
+  const { formatNumber } = useFormat();
   const handleSizeChange = (size) => {
     setSelectedSize(size);
-  };
-
-  const formatNumber = (number) => {
-    return number.toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    });
   };
 
   const handleCategoryClick = (category) => {
@@ -141,15 +131,7 @@ const Home = () => {
     <>
       <div className="flex flex-1 flex-col">
         {/* Navbar Home */}
-        <nav className="border-b mx-4 py-4">
-          <div className="container flex justify-between items-center ">
-            <h1 className="text-4xl font-bold">Home</h1>
-            <div className="-space-x-4  ">
-              {/* Bagian Search */}
-              <Search placeholder="Cari Produk ..." />
-            </div>
-          </div>
-        </nav>
+        <Navbar title="Home" searchPlaceholder="Cari Produk..." />
         {/* flex   */}
         <div className="flex-1 flex overflow-hidden">
           <div className="flex-1 overflow-auto p-4 no-scrollbar">

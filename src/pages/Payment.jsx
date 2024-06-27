@@ -3,8 +3,16 @@ import { OrderContext } from "../context/OrderContext";
 import OrderPayment from "../components/OrderPayment";
 import { Link } from "react-router-dom";
 import DiscountModal from "../components/utils/DiscountModal"; // Adjust the import path as needed
+import useNavigation from "../hooks/useNavigation";
+import useFormat from "../hooks/useFormat";
 
 const Payment = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Memanggil Custom Hook Payment
+  const { handlePayment } = useNavigation();
+  // memanggil Custom Hook Format Number
+  const { formatNumber } = useFormat();
+
   const {
     subtotal,
     discount,
@@ -14,41 +22,13 @@ const Payment = () => {
     setMinOrderAmount,
     setDiscountRate,
     setMaxDiscount,
-    handlePaidOrder
   } = useContext(OrderContext);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const calculateTotal = () => {
     const taxRate = 0;
     const tax = subtotal * taxRate;
     const total = subtotal + tax - discount;
     return total;
-  };
-
-
-  const handlePayment = () => {
-    // Logika pembayaran Anda di sini
-    // Misalnya, melakukan panggilan API untuk memproses pembayaran
-    // ...
-
-    // Setelah pembayaran berhasil
-    handlePaidOrder();
-    // Navigasi ke halaman konfirmasi atau beranda
-    // navigate("/confirmation");
-    alert("Payment successful!");
-  };
-  // const handlePayment = () => {
-  //   // Handle payment logic here
-  //   alert("Payment successful!");
-  // };
-
-  const formatNumber = (number) => {
-    return number.toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    });
   };
 
   return (

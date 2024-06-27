@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
-import { OrderContext } from "../context/OrderContext";
+import useOrder from "../hooks/useOrder";
+import useEditing from "../hooks/useEditing";
+import useNavigation from "../hooks/useNavigation";
+import useFormat from "../hooks/useFormat";
 import EditItemModal from "./EditItemModal";
-import { useNavigate } from "react-router-dom";
 
 const OrderDetails = () => {
   const {
@@ -13,30 +14,18 @@ const OrderDetails = () => {
     handleOrderTypeChange,
     handleUpdateItem,
     handleRemoveItem,
-  } = useContext(OrderContext);
-  const [editingItem, setEditingItem] = useState(null);
+    calculateTotal,
+  } = useOrder();
 
-  const navigate = useNavigate();
+  // Memanggil Format Number 
+  const {formatNumber}= useFormat();
 
-  const calculateTotal = () => {
-    const taxRate = 0;
-    const tax = subtotal * taxRate;
-    const total = subtotal + tax;
-    return total;
-  };
+  // Memanggil Hook Edit order product
+  const { editingItem, handleEditClick, handleSaveEdit, handleCloseModal } =
+    useEditing();
 
-  const handleEditClick = (item) => {
-    setEditingItem(item);
-  };
-
-  const handleSaveEdit = (id, updatedDetails) => {
-    handleUpdateItem(id, updatedDetails);
-    setEditingItem(null);
-  };
-
-  const handleCloseModal = () => {
-    setEditingItem(null);
-  };
+    
+  const { handleContinue } = useNavigation();
 
   const handleQuantityChange = (id, quantity) => {
     if (quantity < 0) return;
@@ -56,21 +45,7 @@ const OrderDetails = () => {
     }
   };
 
-  const handleContinue = () => {
-    if (orderType === "Dine in") {
-      navigate("/Tables");
-    } else {
-      navigate("/payment");
-    }
-  };
-
-  const formatNumber = (number) => {
-    return number.toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    });
-  };
+  
 
   return (
     <div className="w-[400px] h-screen flex flex-col border-l justify-between pt-5">
@@ -209,7 +184,7 @@ const OrderDetails = () => {
             </div>
             <button
               className="my-2 bg-green-700 w-full h-10 rounded-lg"
-              onClick={handleContinue}
+              onClick={() => handleContinue(orderType)}
             >
               {orderType === "Dine in" ? "Continue" : "Payment"}
             </button>
@@ -220,7 +195,9 @@ const OrderDetails = () => {
       {editingItem && (
         <EditItemModal
           item={editingItem}
-          onSave={handleSaveEdit}
+          onSave={(id, updatedDetails) =>
+            handleSaveEdit(id, updatedDetails, handleUpdateItem)
+          }
           onClose={handleCloseModal}
         />
       )}

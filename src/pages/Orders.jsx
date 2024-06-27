@@ -1,17 +1,13 @@
-import Search from "../components/utils/Search";
 import { useContext, useState } from "react";
 import { OrderContext } from "../context/OrderContext";
+import Navbar from "../components/Navbar";
+import useFormat from "../hooks/useFormat";
 
 const Orders = () => {
   const { paidOrders } = useContext(OrderContext);
 
-  const formatNumber = (number) => {
-    return number.toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    });
-  };
+  // memanggil Custom Hook Format Number
+  const { formatNumber } = useFormat();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -35,15 +31,7 @@ const Orders = () => {
     <>
       <div className="flex flex-1 flex-col">
         {/* Navbar Home */}
-        <nav className="border-b mx-4 py-4">
-          <div className="container flex justify-between items-center ">
-            <h1 className="text-4xl font-bold">Orders</h1>
-            <div className="space-x-4 ">
-              {/* Bagian Search */}
-              <Search placeholder="Cari Order" />
-            </div>
-          </div>
-        </nav>
+        <Navbar title="Order" searchPlaceholder="Cari Order..." />
         {/* flex   */}
         <h1 className="text-2xl flex justify-center items-center font-bold mb-4">
           Tabel Orders

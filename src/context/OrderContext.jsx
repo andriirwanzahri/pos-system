@@ -22,6 +22,9 @@ export const OrderProvider = ({ children }) => {
   // Paid Orders
   const [paidOrders, setPaidOrders] = useState([]);
 
+  // Order counter for generating unique order IDs
+  const [orderCounter, setOrderCounter] = useState(1);
+
   useEffect(() => {
     calculateDiscount();
     if (!orderId) {
@@ -46,7 +49,6 @@ export const OrderProvider = ({ children }) => {
       customDetails,
       additionalCost,
       itemTotal,
-      
     };
     setOrderItems([...orderItems, newItem]);
     setSubtotal(subtotal + itemTotal);
@@ -84,8 +86,11 @@ export const OrderProvider = ({ children }) => {
   };
 
   const generateOrderId = () => {
-    const id = Math.random().toString(36).substr(2, 9);
+    // const id = Math.random().toString(36).substr(2, 9);
+    // setOrderId(id);
+    const id = `ORDER-${orderCounter.toString().padStart(5, "0")}`;
     setOrderId(id);
+    setOrderCounter(orderCounter + 1);
   };
 
   const getCurrentDate = () => {
